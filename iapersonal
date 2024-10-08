@@ -1,0 +1,88 @@
+Você é um Personal Trainer IA avançado. Seu objetivo é criar treinos personalizados para usuários com diferentes biotipos corporais, disponibilidade de tempo e preferências de exercícios. 
+
+Para cada solicitação, você deve considerar os seguintes fatores:
+1. Biotipo corporal (ectomorfo, mesomorfo, endomorfo)
+2. Disponibilidade de tempo por dia/semana
+3. Tipos de exercícios preferidos (musculação, cardio, flexibilidade, etc.)
+4. Objetivos de treino (perda de peso, ganho muscular, aumento de resistência)
+
+Ao receber essas informações, você deve responder com um treino personalizado, incluindo:
+- Uma breve explicação sobre como o treino foi adaptado para atender às necessidades específicas do usuário
+- Um plano de treino detalhado, incluindo exercícios, séries, repetições e duração
+- Recomendações adicionais para nutrição e recuperação
+
+Por favor, responda de forma clara e estruturada, usando pontos numerados ou letras quando necessário.
+
+Agora, por favor, crie um treino personalizado com base nas seguintes informações:
+Biotipo corporal: [inserir]
+Disponibilidade de tempo: [inserir]
+Tipos de exercícios preferidos: [inserir]
+Objetivos de treino: [inserir]
+
+
+import openai
+
+class PersonalTrainerIA:
+    def __init__(self):
+        self.api_key = "SUA_API_KEY_AQUI"
+        self.model = "gpt-3.5-turbo"
+
+    def generate_prompt(self, biotype, time_availability, preferred_exercises, training_goals):
+        prompt = f"""
+Você é um Personal Trainer IA avançado. Seu objetivo é criar treinos personalizados para usuários com diferentes biotipos corporais, disponibilidade de tempo e preferências de exercícios.
+
+Para cada solicitação, você deve considerar os seguintes fatores:
+1. Biotipo corporal ({biotype})
+2. Disponibilidade de tempo por dia/semana ({time_availability})
+3. Tipos de exercícios preferidos ({preferred_exercises})
+4. Objetivos de treino ({training_goals})
+
+Ao receber essas informações, você deve responder com um treino personalizado, incluindo:
+- Uma breve explicação sobre como o treino foi adaptado para atender às necessidades específicas do usuário
+- Um plano de treino detalhado, incluindo exercícios, séries, repetições e duração
+- Recomendações adicionais para nutrição e recuperação
+
+Por favor, responda de forma clara e estruturada, usando pontos numerados ou letras quando necessário.
+"""
+        return prompt
+
+    def get_training_plan(self, biotype, time_availability, preferred_exercises, training_goals):
+        prompt = self.generate_prompt(biotype, time_availability, preferred_exercises, training_goals)
+        
+        completion = openai.ChatCompletion.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": "Gerar treino personalizado"}
+            ]
+        )
+        
+        return completion.choices[0].message.content
+
+# Uso da classe
+trainer = PersonalTrainerIA()
+plan = trainer.get_training_plan(
+    biotype="mesomorfo",
+    time_availability="30 minutos por dia, 3 vezes por semana",
+    preferred_exercises="musculação, cardio",
+    training_goals="ganho muscular"
+)
+
+print(plan)
+
+
+Pontos-chave a considerar
+Integração com API: Este código assume que você está usando a API do OpenAI. Você precisará ajustá-lo conforme a API específica que estiver utilizando.
+Segurança: Certifique-se de não expor sua chave API em ambientes públicos ou repositórios de código aberto.
+Processamento de erros: Adicione tratamento de exceções para lidar com possíveis erros na comunicação com a API ou no processamento dos resultados.
+Formatação da saída: Você pode querer adicionar métodos para formatar melhor a saída gerada pelo modelo de IA.
+Personalização adicional: Considere adicionar mais parâmetros ao prompt para uma personalização ainda maior, como nível de experiência ou restrições médicas.
+
+Melhores práticas implementadas
+Modularidade: A classe PersonalTrainerIA encapsula toda a lógica relacionada à geração de treinos.
+Configurabilidade: Os parâmetros da API e do modelo são definidos no construtor, facilitando a mudança se necessário.
+Separação de responsabilidades: O método generate_prompt separa a lógica de criação do prompt da execução real da consulta à API.
+Flexibilidade: O método get_training_plan aceita parâmetros variáveis, permitindo diferentes combinações de inputs.
+
+Considerações finais
+Este pseudocódigo fornece uma estrutura básica para implementar um Personal Trainer IA usando boas práticas de engenharia de prompts. Ele demonstra como você pode integrar um modelo de linguagem avançado em uma aplicação programática.

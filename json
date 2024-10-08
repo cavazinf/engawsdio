@@ -1,0 +1,36 @@
+{
+  "Comment": "Assistente de Delivery Workflow",
+  "StartAt": "ReceberPedido",
+  "States": {
+    "ReceberPedido": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ReceberPedidoFunction",
+      "Next": "ValidarPedido"
+    },
+    "ValidarPedido": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ValidarPedidoFunction",
+      "Next": "ProcessarPagamento"
+    },
+    "ProcessarPagamento": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ProcessarPagamentoFunction",
+      "Next": "AtualizarStatus"
+    },
+    "AtualizarStatus": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:AtualizarStatusFunction",
+      "Next": "ProcessarEntrega"
+    },
+    "ProcessarEntrega": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ProcessarEntregaFunction",
+      "Next": "EnviarFeedback"
+    },
+    "EnviarFeedback": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:EnviarFeedbackFunction",
+      "End": true
+    }
+  }
+}
